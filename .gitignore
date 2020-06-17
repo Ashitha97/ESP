@@ -1,0 +1,4 @@
+.idea
+venv
+dataAnalysis/.ipynb_checkpoints
+__pycache__
