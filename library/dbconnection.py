@@ -6,17 +6,17 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 from config import username, password, endpoint
 
-# Configurations
-db = 'oasis-data'
 
 class PostgresRDS(object):
     """
     Class Connects to an RDS instance of Postgresql
+    Need to input the database that needs to be connected to
     """
 
-    def __init__(self):
+    def __init__(self, db):
         self.engine = None
         self.Session = None
+        self.db = db
 
     def connect(self):
         """
@@ -28,7 +28,7 @@ class PostgresRDS(object):
                 user=username,
                 pw=password,
                 host=endpoint,
-                db=db
+                db=self.db
             ),
             'sqlalchemy.pool_pre_ping': True,
             'sqlalchemy.pool_recycle': 3600
@@ -41,7 +41,7 @@ class PostgresRDS(object):
 
     def __enter__(self):
         self.engine = self.connect()
-        print("Connected to {} DataBase".format(db))
+        print("Connected to {} DataBase".format(self.db))
         return self.engine
 
     def __exit__(self, exc_type, exc_val, exc_tb):
