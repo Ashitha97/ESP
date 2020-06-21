@@ -18,7 +18,7 @@ def import_xdiag(well_list):
     query = """
     SELECT
     "NodeID", "Date", "FillagePct", "MotorLoad", 
-    "TubingPressure", "CasingPressure", "Friction",
+    "TubingPressure", "CasingPressure", "Friction"
     "TubingLeak", "FluidLevelXDiag"
     FROM xspoc_dbo."tblXDiagResults"
     WHERE "NodeID" in {}
@@ -43,8 +43,8 @@ def import_card(well_list, card_cols):
     "NodeID",
     "Date",
     encode("tblCardData"."POCDownholeCardB", 'hex') as downcard,
-    encode("tblCardData"."SurfaceCardB", 'hex') as surfcard,  -- Add more column if need be
-    "SPM", "CardArea", "StrokeLength"
+    encode("tblCardData"."SurfaceCardB", 'hex') as surfcard,
+    "SPM", "Fillage", "HiLoadLimit", "LoLoadLimit"
     FROM xspoc_dbo."tblCardData"
     WHERE "NodeID" in {}
     ORDER BY "NodeID" , "Date";
@@ -80,13 +80,13 @@ def main():
     ]
     card_cols = ['downcard', 'surfcard']
 
-    #XDiag
+    # #XDiag
     xdiag = import_xdiag(well_list)
     print(xdiag.head())
     AddData.add_data(xdiag, db='oasis-dev', table='xdiag',
                      merge_type='replace', card_col=None, index_col='Date')
 
-    #tblCardData
+    # tblCardData
     card_data = import_card(well_list, card_cols)
     print(card_data.head())
     AddData.add_data(df=card_data, db='oasis-dev', table='card',
