@@ -6,6 +6,7 @@ import numpy as np
 import struct
 from geoalchemy2.shape import from_shape
 from shapely.geometry import Polygon
+from shapely import wkb
 
 
 class Cleaning:
@@ -58,3 +59,4 @@ class Cleaning:
             wkb_element = np.nan
 
         return wkb_element
+

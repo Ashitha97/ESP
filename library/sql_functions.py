@@ -57,7 +57,7 @@ class AddData:
             cur.copy_expert(sql=sql, file=s_buf)
 
     @staticmethod
-    def add_data(df, db, table, merge_type='append', card_col=None, index_col=None):
+    def add_data(df, db, table, schema=None, merge_type='append', card_col=None, index_col=None):
         """
         Method to add data to a postgres db
         :param df: Data in the form of a pandas DataFrame
@@ -82,9 +82,8 @@ class AddData:
 
         with PostgresRDS(db=db) as engine:
             try:
-                df.to_sql(table, con=engine, if_exists=merge_type, method=AddData.psql_insert_copy,
+                df.to_sql(table, con=engine, schema=schema,if_exists=merge_type, method=AddData.psql_insert_copy,
                           dtype=dtype_dict)
-                print("Going On...")
             except Exception as e:
                 print(e)
                 return print("Data Not Added")
