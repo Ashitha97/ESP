@@ -4,9 +4,9 @@ to the PostgreSQL db in an ec2 instance.
 This is for visualizing said data in grafana
 """
 
-from library.dbconnection import PostgresRDS
-from library.sql_functions import run_query, AddData
-from library.card_functions import Cleaning
+from library.lib_aws import PostgresRDS, AddData
+from library.lib_dyna import CardFunctions
+import pandas as pd
 
 issue_well = 'Spratley 5494 14-13 15T'
 
@@ -46,7 +46,7 @@ def import_card(well_list, card_cols):
     """.format(tuple(well_list))
 
     with PostgresRDS(db='oasis-data') as engine:
-        data = run_query(query, engine)
+        data = pd.read_sql(query, engine)
 
     if set(card_cols).issubset(data.columns):
         pass
@@ -54,7 +54,7 @@ def import_card(well_list, card_cols):
         raise ValueError("Card Columns were not specified properly. Check the query in import_card function")
 
     for col in card_cols:  # Converting the hex columns to a wkb format
-        data.loc[:, col] = data.loc[:, col].apply(Cleaning.hex_to_wkb)
+        data.loc[:, col] = data.loc[:, col].apply(CardFunctions.hex_to_wkb)
 
     return data
 

@@ -9,7 +9,7 @@ using the class `PostgresRDS` in file `/dbconnection/postgresql.py`. Use the jup
 
 To run basic queries use the method `run_query(query, con)` as follows;
 ```python
-from library.dbconnection import PostgresRDS  # Get the connection class
+from library.lib_aws import PostgresRDS  # Get the connection class
 from library.sqlFunctions import run_query
 
 sql_query = """

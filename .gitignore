@@ -1,5 +1,6 @@
 .idea
 venv
-dataAnalysis/.ipynb_checkpoints
+data_analysis_notebooks/.ipynb_checkpoints
 __pycache__
 petro
+.ipynb*

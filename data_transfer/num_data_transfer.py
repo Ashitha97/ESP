@@ -2,8 +2,7 @@
 Transfers Numerical data from main db to dev db for
 specific wells
 """
-from library import dbconnection
-from library import sql_functions
+from library import lib_aws
 import pandas as pd
 
 def query_gen(table_name, well_list=None):
@@ -127,12 +126,12 @@ def main():
     for i in tables_w_node:
         query1 = query_gen(i, well_list)
         print("Working on Table {}".format(i))
-        with dbconnection.PostgresRDS(db=source_db) as engine:
+        with lib_aws.PostgresRDS(db=source_db) as engine:
             data = pd.read_sql(query1, engine)
 
         print("Data Imported with shape {}".format(data.shape))
 
-        sql_functions.AddData.add_data(data, db=end_db, schema='xspoc', table=i[3:].lower(),
+        lib_aws.AddData.add_data(data, db=end_db, schema='xspoc', table=i[3:].lower(),
                                        merge_type='replace', card_col=None, index_col="NodeID")
 
         del query1
@@ -143,14 +142,14 @@ def main():
     for i in tables_wo_node:
         query1 = query_gen(i)
         print("Working on Table {}".format(i))
-        with dbconnection.PostgresRDS(db=source_db) as engine:
+        with lib_aws.PostgresRDS(db=source_db) as engine:
             data = pd.read_sql(query1, engine)
 
         data.set_index(data.columns[0], inplace=True)
 
         print("Data Imported with shape {}".format(data.shape))
 
-        sql_functions.AddData.add_data(data, db=end_db, schema='xspoc', table=i[3:].lower(),
+        lib_aws.AddData.add_data(data, db=end_db, schema='xspoc', table=i[3:].lower(),
                                        merge_type='replace', card_col=None, index_col=None)
 
         del query1
