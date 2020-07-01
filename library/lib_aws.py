@@ -4,7 +4,7 @@ Class to connect to Databases
 
 import sqlalchemy
 from sqlalchemy.orm import Session
-from config import username, password, endpoint, bucket_name
+from config import username, password, endpoint
 import boto3
 import joblib
 import tempfile
@@ -15,38 +15,51 @@ from geoalchemy2 import Geometry
 
 
 # Functions to save and read models from the s3 bucket
-def save_model(obj, name):
+class S3:
     """
-    Saves the model to an s3 bucket.
-    Use the variables 'bucket_name' and 'location' to specify the path
-    :param obj: Objects to be dumped
-    :param name: Name of the file, Add the path if need be
-    :return:
+    Class with methods to r/w data from an s3 bucket
+    Should have access to the bucket being used.
+    Set up the credentials and config files in .aws/
     """
-    s3 = boto3.resource('s3')
-    with tempfile.TemporaryFile() as fp:
-        joblib.dump(obj, fp)
-        fp.seek(0)
-        s3.Bucket(bucket_name).put_object(Key=name, Body=fp.read())
 
-    print("Model Updated successfully")
+    def __init__(self, bucket):
+        """
+        Initialize
+        :param bucket: S3 Bucket name
+        """
+        self.bucket = bucket
 
+    def save_model(self, obj, name):
+        """
+        Saves the model to an s3 bucket.
+        Use the variables 'bucket_name' and 'location' to specify the path
+        :param obj: Objects to be dumped
+        :param name: Name of the file, Add the path if need be (/path/filename.pkl)
+        :return: Log
+        """
+        s3 = boto3.resource('s3')
+        with tempfile.TemporaryFile() as fp:
+            joblib.dump(obj, fp)
+            fp.seek(0)
+            s3.Bucket(self.bucket).put_object(Key=name, Body=fp.read())
+        print("Model Updated successfully")
 
-def import_model(name):
-    """
-    Imports the model from s3
-    Specify the bucket and the location in config variables
-    'bucket_name'
-    :param name: Name of the model to import, include the pathname if needed
-    :return: True if model imported successfully
-    """
-    s3 = boto3.resource('s3')
-    with tempfile.TemporaryFile() as fp:
-        s3.Bucket(bucket_name).download_fileobj(Key=name, Fileobj=fp)
-        fp.seek(0)
-        model_objs = joblib.load(fp)
+    def import_model(self, name):
+        """
+        Imports the model from s3
+        Specify the bucket and the location in config variables
+        'bucket_name'
+        :param name: Name of the model to import, include the pathname if needed('/path/filename.pkl')
+        :param s3_bucket: s3 Bucket name.(Should hve access to the bucket, set up config and credentials in .aws/)
+        :return: model objs
+        """
+        s3 = boto3.resource('s3')
+        with tempfile.TemporaryFile() as fp:
+            s3.Bucket(self.bucket).download_fileobj(Key=name, Fileobj=fp)
+            fp.seek(0)
+            model_objs = joblib.load(fp)
 
-    return model_objs
+        return model_objs
 
 
 # DataBase Classes
