@@ -1,3 +1,5 @@
+imblearn
+scikit-multilearn
 scikit-learn
 attrs==19.3.0
 backcall==0.2.0

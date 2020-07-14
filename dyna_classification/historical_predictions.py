@@ -4,6 +4,7 @@ Using the model stored in the s3 bucket
 """
 from library import lib_aws, lib_dyna
 import pandas as pd
+import numpy as np
 
 def main():
     # Import the data
@@ -28,6 +29,7 @@ def main():
                                            x=X,
                                            mlb=mlb)
     pred_data = pred.get_pred_df(n=2)  # Get 2 labels as predictions
+    pred_data.loc[pred_data.Prob2 <= 35, 'Label2'] = np.nan
     full_pred_data = pd.concat([fea.df[['NodeID', 'Date']], pred_data], axis=1)  # Get the prediction DataFrame
 
     # Replace the data in the db

@@ -114,6 +114,7 @@ class CardFunctions:
             if np.isnan(fd).any():
                 error_data.append(i)
 
+        print("Total errors found in {} datapoints".format(len(error_data)))
         # error = self.df.loc[error_data]
         self.df.drop(error_data, inplace=True)
         self.df.reset_index(inplace=True, drop=True)
