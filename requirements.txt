@@ -1,3 +1,4 @@
+shapely
 imblearn
 scikit-multilearn
 scikit-learn
