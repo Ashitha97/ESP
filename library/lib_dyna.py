@@ -3,16 +3,15 @@ Contains various classes and functions to work with
 Dynomometer Cards and Multi-Labels
 """
 
+import struct
+
 # Imports
 import numpy as np
 import pandas as pd
-import sys
-import struct
 from geoalchemy2.shape import from_shape
+from pyefd import elliptic_fourier_descriptors
 from shapely.geometry import Polygon
 from shapely.wkb import loads
-from pyefd import elliptic_fourier_descriptors
-
 # ml
 from sklearn.preprocessing import MultiLabelBinarizer
 
@@ -23,6 +22,7 @@ class CardFunctions:
     dyna card data and the cards
     Thus class has inherited the class CardTransformation
     """
+
     @staticmethod
     def get_dyna(card_arr):
         """
@@ -65,7 +65,7 @@ class CardFunctions:
 
         try:
             polygon = Polygon(xy)
-            wkb_element = from_shape(polygon, srid=4326)
+            wkb_element = from_shape(polygon)
         except Exception as e:
             print(e)
             wkb_element = np.nan
@@ -99,7 +99,8 @@ class CardFunctions:
         error_data = []
 
         if isinstance(self.df.loc[0, self.card_col], str):  # Checking if the card col is a shapely object
-            self.df.loc[:, self.card_col] = self.df.loc[:, self.card_col].apply(lambda x: loads(x, hex=True))  # Convert to Polygon
+            self.df.loc[:, self.card_col] = self.df.loc[:, self.card_col].apply(
+                lambda x: loads(x, hex=True))  # Convert to Polygon
 
         for i in self.df.index:
             poly = self.df.loc[i, self.card_col]
@@ -196,9 +197,10 @@ class MultiLabels(CardFunctions):
         if self.df is not None:
             merged = self.df[self.label_cols].apply(tuple, axis=1)  # Merges the labels into a list of tuples
             try:
-                merged = merged.apply(lambda lbl: tuple(x for x in lbl if x==x))  # Removes None values from tuple
+                merged = merged.apply(lambda lbl: tuple(x for x in lbl if x == x))  # Removes None values from tuple
             except:
-                merged = merged.apply(lambda lbl: tuple(x for x in lbl if x is not None))  # Removes nan values from tuple
+                merged = merged.apply(
+                    lambda lbl: tuple(x for x in lbl if x is not None))  # Removes nan values from tuple
         else:
             merged = self.merged
             self.df = pd.DataFrame(columns=self.label_cols)
@@ -463,13 +465,13 @@ class Predictions_MultiLabel:
         pred_df = pd.DataFrame()  # Intialize an empty DataFrame
 
         for i in range(n):
-            i_ = i+1  # As we are using the desc order 0 in asc will correspond to -1 in desc
+            i_ = i + 1  # As we are using the desc order 0 in asc will correspond to -1 in desc
             label = np.argsort(y_prob)[:, -i_]  # Get the ith numerical label
             label = np.vectorize(class_dict.get)(label)  # Get the corresponding Class name
 
             prob = np.sort(y_prob)[:, -i_] * 100  # Get the ith probability
 
-            pred_df['Label'+str(i_)] = label  # Append it to the
-            pred_df['Prob'+str(i_)] = prob
+            pred_df['Label' + str(i_)] = label  # Append it to the
+            pred_df['Prob' + str(i_)] = prob
 
         return pred_df.round(2)

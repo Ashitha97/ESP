@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+
 def dyna_plot(poly_arr, name, fill=False, color=None, fig_labels=None, set_axis=None, save=None, show=True, legend=True):
     """
     Plots Dynamometer cards

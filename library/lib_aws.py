@@ -50,7 +50,6 @@ class S3:
         Specify the bucket and the location in config variables
         'bucket_name'
         :param name: Name of the model to import, include the pathname if needed('/path/filename.pkl')
-        :param s3_bucket: s3 Bucket name.(Should hve access to the bucket, set up config and credentials in .aws/)
         :return: model objs
         """
         s3 = boto3.resource('s3')
