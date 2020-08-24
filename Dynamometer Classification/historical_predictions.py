@@ -6,6 +6,7 @@ from library import lib_aws, lib_dyna
 import pandas as pd
 import numpy as np
 
+
 def main():
     # Import the data
     query = """select "NodeID", "Date", pocdowncard from xspoc.card order by "NodeID", "Date";"""
@@ -46,6 +47,7 @@ def main():
             connection.execute("""CREATE UNIQUE INDEX dynapred_idx ON clean.dynapred ("NodeID", "Date");""")
 
     return None
+
 
 if __name__ == '__main__':
     main()
