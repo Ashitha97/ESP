@@ -7,7 +7,7 @@ import os
 username = os.environ.get("OASIS_USER")
 password = os.environ.get("OASIS_PASS")
 endpoint = os.environ.get("OASIS_HOST")
-data_path = os.environ.get("OASIS_DATA_PATH")
+# data_path = os.environ.get("OASIS_DATA_PATH")
 # S3 Details
 # Bucket where the algo needs to be saved and imported for predictions
-bucket_name = "et-bonanza"
+# bucket_name = "et-oasis"
