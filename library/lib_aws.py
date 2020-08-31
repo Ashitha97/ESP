@@ -69,10 +69,11 @@ class PostgresRDS(object):
     Note Set the username, password and endpoint in the config file via env variables
     """
 
-    def __init__(self, db):
+    def __init__(self, db, verbose=0):
         self.engine = None
         self.Session = None
         self.db = db
+        self.vprint = print if verbose != 0 else lambda *args, **kwargs: None
 
     def connect(self):
         """
@@ -97,13 +98,13 @@ class PostgresRDS(object):
 
     def __enter__(self):
         self.engine = self.connect()
-        print("Connected to {} DataBase".format(self.db))
+        self.vprint("Connected to {} DataBase".format(self.db))
         return self.engine
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.Session.close()
         self.engine.dispose()
-        print("Connection Closed")
+        self.vprint("Connection Closed")
 
 
 class AddData:
