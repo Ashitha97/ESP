@@ -5,8 +5,7 @@ import os
 
 # RDS Postgres Database Info
 username = os.environ.get("OASIS_USER")
-# password = os.environ.get("OASIS_PASS")
-password = 'enf_oasis!!400'
+password = os.environ.get("OASIS_PASS")
 endpoint = os.environ.get("OASIS_HOST")
 # data_path = os.environ.get("OASIS_DATA_PATH")
 # S3 Details
