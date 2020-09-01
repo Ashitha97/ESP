@@ -84,13 +84,18 @@ def transfer_backup_card(well_name):
     # print(f'Max time: {test_data.Date.max()}')
 
     # Add data to production
-    lib_aws.AddData.add_data(df=test_data,
-                             db='oasis-prod',
-                             schema='xspoc',
-                             table='card',
-                             merge_type='append',
-                             card_col=card_cols,
-                             index_col='Date')
+    try:
+        lib_aws.AddData.add_data(df=test_data,
+                                 db='oasis-prod',
+                                 schema='xspoc',
+                                 table='card',
+                                 merge_type='append',
+                                 card_col=card_cols,
+                                 index_col='Date')
+    except Exception as e:
+        print(e)
+        return print("Data Already Present")
+
     return None
 
 
