@@ -50,6 +50,7 @@ In addition the `~/.aws/config` files needs to be set up with the IAM access det
 
 For the project an PostgreSQL Database Server is being used. The structure of the database is as follows:
 
+//TODO NEED TO UPDATE THIS
 ```
 RDS PostgreSQL Server
 |                                                
