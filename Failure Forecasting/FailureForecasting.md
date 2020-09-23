@@ -1,6 +1,8 @@
 # Problem Statement and Overview
 
-
+Forecast Failures `x days` in advance. 
+In a real-time scenario, the goal will be to say `This pump has a -- % chance of failing in the next x days due to --- condition:`.
+Depending on how the algo is built the goal can be modified.
 
 # Data
 

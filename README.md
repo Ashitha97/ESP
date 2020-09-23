@@ -54,29 +54,21 @@ For the project an PostgreSQL Database Server is being used. The structure of th
 ```
 RDS PostgreSQL Server
 |                                                
-├── oasis-dev                               # DataBase name
-│   ├── clean                               # Schema with processed data from the xspoc schema
+├── oasis-prod                              # DataBase name
+│   ├── analysis                            # Schema which contains info for various analysis run
 │   │   ├── tables                          
-│   |   |   ├── dynabounds                  # Well Bounds for pocdowncard
-│   |   |   ├── dynalabel                   # Labeled data for dyna classification
-│   |   |   ├── dynapred                    # Predictions from dyna classification model
-│   |   |   ├── xpred                       # Predictions from window forecasting
-│   |   |   └── xspoc                       # Clean and Merged xdiagresults and card tables from xspoc schema
-│   │   ├── views                           
-│   |   |   └── winpred                     # View generated from xpred and xspoc to visualize window forecasting
+│   |   |   ├── failure_info                # failure_info for failure forecasting
+│   |   |   └── dyna_labels                 # labeled dynamometer cards
 
 │   ├── xspoc                               # Schema with all tables from oasis converted from MS-SQL Server
 │   │   ├── tables                          
-│   |   |   ├── card                        # Full Card Data
-│   |   |   ├── xdiagresults                
-│   |   |   ├── xdiagrodresults 
-.   .   .   .                               # Other tables havent yet been used
-.   .   .   .
-│   |   |   ├── ...                       
-│   |   |   └── ...                    
-│   │   ├── views                         
-│   |   |   ├── card_xdiag                  # 
-│   |   |   └── merged                      # 
+│   |   |   ├── card                        # Dynamometer card data
+│   |   |   ├── only_fails                  # Just the failure info, used only for visualization
+│   |   |   ├── sample_predictions          # Preditions for failure_forecasts , will be moved
+│   |   |   ├── well_info                   # List of wells and groupings                       
+│   |   |   ├── welltest                    # Info about production                       
+│   |   |   ├── xdiag                       # Main feature dataset                       
+│   |   |   └── xdiagrod                    # Rod Specific info
 
 
 ```
