@@ -42,9 +42,14 @@ OASIS_HOST
 ### S3
 
 To interact with s3, `boto3` and `s3fs` libraries will be used. 
+The primary use case will be for saving trained model and for importing data files. 
+Before interacting with `s3` the following files need to be set up with your IAM Access details:
+- `~/.aws/credentials`
+- `~/.aws/config`
 
-In addition the `~/.aws/config` files needs to be set up with the IAM access details.
- 
+Get the acess details from the project admin. Use the following link to see how to set it up: 
+- [AWS Credentials setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+
 
 ## Database Info  (*Update required)
 
