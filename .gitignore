@@ -6,3 +6,4 @@ petro
 .ipynb*
 *.csv
 data
+*.log
